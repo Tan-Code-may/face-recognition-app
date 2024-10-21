@@ -13,7 +13,7 @@
             </div>
         {% endif %}
     {% endwith %}
-    <form method="POST" action="{{ url_for('login') }}">
+    <form method="POST" action="{{ url_for('app_routes.login') }}">
         {{ form.hidden_tag() }}
         <div class="form-group">
             {{ form.email.label }} 

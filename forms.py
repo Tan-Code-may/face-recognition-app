@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, SelectField, FileField
+from wtforms import StringField, PasswordField, SubmitField, SelectField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
+from flask_wtf.file import FileField, FileAllowed
+from flask import request
 
 
 class RegistrationForm(FlaskForm):
@@ -12,9 +14,28 @@ class RegistrationForm(FlaskForm):
                                      DataRequired(), EqualTo('password')])
     role = SelectField(
         'Role', choices=[('student', 'Student'), ('professor', 'Professor')])
-    images = FileField('Upload Images (for students)', validators=[
-                       DataRequired()])  # Only if student selected
+    images = FileField('Upload Images', validators=[
+                       FileAllowed(['jpg', 'png', 'jpeg', 'gif'], 'Images only!')])
+
     submit = SubmitField('Register')
+
+    def validate(self, **kwargs):  # Add **kwargs to accept extra keyword arguments
+        # Call the parent validate method with any extra arguments
+        if not super(RegistrationForm, self).validate(**kwargs):
+            return False
+        # Check for student role
+        if self.role.data == 'student':
+            if not self.images.data or len(request.files.getlist("images")) != 5:
+                self.images.errors.append(
+                    'Students must upload exactly 5 images.')
+                return False
+        # Check for professor role
+        elif self.role.data == 'professor':
+            if not self.images.data or len(request.files.getlist("images")) != 1:
+                self.images.errors.append(
+                    'Professors must upload exactly 1 image.')
+                return False
+        return True
 
 
 class LoginForm(FlaskForm):

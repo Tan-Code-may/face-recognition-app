@@ -14,7 +14,7 @@
         {% endif %}
     {% endwith %}
     
-    <form method="POST" enctype="multipart/form-data" action="{{ url_for('register') }}">
+    <form method="POST" enctype="multipart/form-data" action="{{ url_for('app_routes.register') }}">
         {{ form.hidden_tag() }}
         <div class="form-group">
             {{ form.username.label }}
@@ -37,14 +37,37 @@
             {{ form.role() }}
         </div>
 
-        <!-- Show image upload input only if "Student" role is selected -->
-        <div class="form-group" id="student-upload" style="display:none;">
-            <label for="file-input">Upload 5 images from different angles:</label>
+        <!-- Image upload field, dynamically set based on the selected role -->
+        <div class="form-group" id="upload-group">
+            <label for="file-input" id="upload-label">Upload Images</label>
             <input type="file" id="file-input" multiple name="images" accept="image/*">
-            <p id="image-hint">Please upload 5 images.</p>
+            <p id="image-hint">Please upload images.</p>
         </div>
 
         <button type="submit" class="btn">Register</button>
     </form>
 </div>
+
+<!-- Add JavaScript to handle showing the correct number of image uploads -->
+<script>
+    const roleField = document.getElementById('role');
+    const fileInput = document.getElementById('file-input');
+    const uploadLabel = document.getElementById('upload-label');
+    const imageHint = document.getElementById('image-hint');
+
+    roleField.addEventListener('change', function() {
+        if (roleField.value === 'student') {
+            fileInput.setAttribute('multiple', 'multiple');  // Allow multiple files
+            uploadLabel.textContent = "Upload 5 images from different angles";
+            imageHint.textContent = "Please upload exactly 5 images.";
+        } else if (roleField.value === 'professor') {
+            fileInput.removeAttribute('multiple');  // Only 1 file allowed
+            uploadLabel.textContent = "Upload 1 image";
+            imageHint.textContent = "Please upload exactly 1 image.";
+        }
+    });
+
+    // Trigger change event on page load to ensure correct visibility of image upload
+    roleField.dispatchEvent(new Event('change'));
+</script>
 {% endblock %}

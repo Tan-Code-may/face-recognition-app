@@ -1,8 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from datetime import datetime
-
-db = SQLAlchemy()
+from extensions import db
 
 
 class User(UserMixin, db.Model):

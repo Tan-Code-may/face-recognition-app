@@ -18,7 +18,7 @@
     <!-- Schedule a Class -->
     <div class="actions">
         <h3>Schedule a Class</h3>
-        <form method="POST" action="{{ url_for('schedule_class') }}">
+        <form method="POST" action="{{ url_for('app_routes.schedule_class') }}">
             <div class="form-group">
                 <label for="course">Select Course</label>
                 <select name="course" id="course">
@@ -38,7 +38,7 @@
     <!-- View Attendance Reports -->
     <div class="actions">
         <h3>View Attendance Reports</h3>
-        <form method="POST" action="{{ url_for('view_report') }}">
+        <form method="POST" action="{{ url_for('app_routes.view_report') }}">
             <div class="form-group">
                 <label for="course">Select Course</label>
                 <select name="course" id="course">

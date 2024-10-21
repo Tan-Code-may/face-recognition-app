@@ -11,17 +11,17 @@
     <header>
         <nav>
             <ul class="nav-list">
-                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('app_routes.home') }}">Home</a></li>
                 {% if current_user.is_authenticated %}
                     {% if current_user.role == 'student' %}
-                        <li><a href="{{ url_for('student_dashboard') }}">Dashboard</a></li>
+                        <li><a href="{{ url_for('app_routes.student_dashboard') }}">Dashboard</a></li>
                     {% elif current_user.role == 'professor' %}
-                        <li><a href="{{ url_for('professor_dashboard') }}">Dashboard</a></li>
+                        <li><a href="{{ url_for('app_routes.professor_dashboard') }}">Dashboard</a></li>
                     {% endif %}
-                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                    <li><a href="{{ url_for('app_routes.logout') }}">Logout</a></li>
                 {% else %}
-                    <li><a href="{{ url_for('login') }}">Login</a></li>
-                    <li><a href="{{ url_for('register') }}">Register</a></li>
+                    <li><a href="{{ url_for('app_routes.login') }}">Login</a></li>
+                    <li><a href="{{ url_for('app_routes.register') }}">Register</a></li>
                 {% endif %}
             </ul>
         </nav>
