@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Professor Dashboard{% endblock %}
+{% block content %}
+<div class="dashboard-container">
+    <h2>Welcome, Professor {{ current_user.username }}</h2>
+
+    <!-- Flash messages for feedback -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    
+    <!-- Schedule a Class -->
+    <div class="actions">
+        <h3>Schedule a Class</h3>
+        <form method="POST" action="{{ url_for('schedule_class') }}">
+            <div class="form-group">
+                <label for="course">Select Course</label>
+                <select name="course" id="course">
+                    {% for course in courses %}
+                    <option value="{{ course.id }}">{{ course.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="date">Select Date</label>
+                <input type="date" id="date" name="date">
+            </div>
+            <button type="submit" class="btn">Schedule Class</button>
+        </form>
+    </div>
+
+    <!-- View Attendance Reports -->
+    <div class="actions">
+        <h3>View Attendance Reports</h3>
+        <form method="POST" action="{{ url_for('view_report') }}">
+            <div class="form-group">
+                <label for="course">Select Course</label>
+                <select name="course" id="course">
+                    {% for course in courses %}
+                    <option value="{{ course.id }}">{{ course.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn">View Report</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

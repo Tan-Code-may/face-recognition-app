@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Attendance Report{% endblock %}
+{% block content %}
+<div class="report-container">
+    <h2>Attendance Report for {{ course_name }}</h2>
+
+    <table class="attendance-table">
+        <thead>
+            <tr>
+                <th>Student Name</th>
+                <th>Roll Number</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in attendance_records %}
+            <tr>
+                <td>{{ record.student.username }}</td> <!-- Assuming relationship to User model -->
+                <td>{{ record.student.roll_number }}</td>
+                <td>{{ record.date }}</td>
+                <td>{{ record.status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
