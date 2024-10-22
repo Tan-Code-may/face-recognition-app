@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, flash, request, Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
 from extensions import db, bcrypt  # Import from extensions
 from forms import RegistrationForm, LoginForm
-from models import User, Attendance, Course
+from models import User, Attendance, Course, Classroom
 import os
 from config import Config
 from werkzeug.utils import secure_filename
@@ -211,7 +211,6 @@ def view_attendance(course_id):
 
 # Professor Dashboard
 
-
 @app_routes.route('/professor_dashboard')
 @login_required
 def professor_dashboard():
@@ -219,12 +218,14 @@ def professor_dashboard():
         flash('Access denied', 'danger')
         return redirect(url_for('app_routes.home'))
 
-    # Fetch courses taught by the professor
+    # Fetch courses and classrooms from the database
     courses = Course.query.filter_by(professor_id=current_user.id).all()
+    classrooms = Classroom.query.all()  # Fetch all classrooms
 
-    return render_template('professor_dashboard.html', courses=courses)
+    return render_template('professor_dashboard.html', courses=courses, classrooms=classrooms)
 
-# Route to schedule a class (Professor only)
+
+# Route to schedule a class
 
 
 @app_routes.route('/schedule_class', methods=['POST'])
@@ -235,11 +236,14 @@ def schedule_class():
         return redirect(url_for('app_routes.home'))
 
     course_id = request.form.get('course')
+    classroom_id = request.form.get('classroom')  # Get the selected classroom
     date = request.form.get('date')
 
-    # Assuming you have a method to schedule a class
-    flash(f'Class scheduled for {date}!', 'success')
+    # Use the classroom_id and course_id as needed (e.g., save to the database or perform an action)
+
+    flash(f'Class scheduled in classroom {classroom_id} for {date}!', 'success')
     return redirect(url_for('app_routes.professor_dashboard'))
+
 
 # Route to view attendance report (Professor only)
 
@@ -257,3 +261,6 @@ def view_report():
     attendance_records = Attendance.query.filter_by(course_id=course_id).all()
 
     return render_template('attendance_report.html', attendance_records=attendance_records)
+
+
+

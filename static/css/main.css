@@ -6,6 +6,7 @@ body {
     background-color: #f9f9f9;
 }
 
+/* Header Styles */
 header {
     background-color: #4CAF50;
     color: white;
@@ -170,15 +171,26 @@ button.btn {
 .attendance-page .attendance-table th,
 .attendance-page .attendance-table td {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 12px;
     text-align: center;
 }
 
 .attendance-page .attendance-table th {
     background-color: #4CAF50;
     color: white;
+    font-size: 1.1em;
 }
 
+.attendance-page .attendance-table td {
+    background-color: #f9f9f9;
+}
+
+.attendance-page .attendance-table td:nth-child(4) {
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+/* Scoped style for pie chart attendance table */
 .attendance-page .attendance-table canvas {
     width: 250px !important;
     height: 250px !important;
@@ -191,6 +203,7 @@ button.btn {
     vertical-align: middle;
 }
 
+/* Responsive Table */
 @media (max-width: 768px) {
     .attendance-page .attendance-table canvas {
         width: 150px !important;
@@ -202,11 +215,6 @@ button.btn {
     }
 }
 
-.attendance-page .attendance-table td:nth-child(3) {
-    font-size: 1.2em;
-    font-weight: bold;
-}
-
 /* Footer Styles */
 footer {
     text-align: center;
@@ -216,4 +224,63 @@ footer {
     position: fixed;
     bottom: 0;
     width: 100%;
+}
+
+/* Styles for the Attendance Report Page */
+.attendance-page .report-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.attendance-page h2 {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 30px;
+    color: #4CAF50;
+}
+
+.attendance-page .attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.attendance-page .attendance-table th, 
+.attendance-page .attendance-table td {
+    padding: 12px;
+    border: 1px solid #4CAF50; /* Make sure the border is visible */
+    text-align: center; /* Center text alignment */
+    vertical-align: middle; /* Align text vertically in the middle */
+}
+.attendance-page .attendance-table th {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 1.1em;
+    text-align: center;
+}
+
+.attendance-page .attendance-table td {
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+/* Ensure alternating row colors for better visibility */
+.attendance-page .attendance-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+@media (max-width: 768px) {
+    .attendance-page .attendance-table th, 
+    .attendance-page .attendance-table td {
+        padding: 8px;
+        font-size: 0.9em;
+    }
+
+    .attendance-page h2 {
+        font-size: 1.5em;
+    }
 }
