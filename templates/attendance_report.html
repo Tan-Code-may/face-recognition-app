@@ -1,25 +1,23 @@
 {% extends "base.html" %}
 {% block title %}Attendance Report{% endblock %}
 {% block content %}
-<div class="report-container attendance-page">
-    <h2>Attendance Report for {{ course_name }}</h2>
+<div class="attendance-report">
+    <h2>Attendance Report for {{course_name}}</h2>
 
-    <table class="attendance-table">
+    <table class="table">
         <thead>
             <tr>
                 <th>Student Name</th>
                 <th>Roll Number</th>
-                <th>Date</th>
-                <th>Status</th>
+                <th>Attendance Percentage</th>
             </tr>
         </thead>
         <tbody>
-            {% for record in attendance_records %}
+            {% for data in report_data %}
             <tr>
-                <td>{{ record.student.username }}</td> <!-- Assuming relationship to User model -->
-                <td>{{ record.student.roll_number }}</td>
-                <td>{{ record.date }}</td>
-                <td>{{ record.status }}</td>
+                <td>{{ data.name }}</td>
+                <td>{{ data.roll_number }}</td>
+                <td>{{ data.attendance_percentage }}%</td>
             </tr>
             {% endfor %}
         </tbody>

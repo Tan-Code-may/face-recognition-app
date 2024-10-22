@@ -284,3 +284,52 @@ footer {
         font-size: 1.5em;
     }
 }
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: left;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table th, .table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+}
+
+.table th {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+.table td {
+    text-align: center;
+}
+
+.table tr {
+    background-color: #f9f9f9;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.attendance-report {
+    margin: 50px auto;
+    width: 80%;
+    text-align: center;
+}
+
+h2 {
+    font-size: 30px;
+    margin-bottom: 20px;
+    color: #4CAF50;
+}

@@ -29,7 +29,7 @@ def register():
 
     if current_user.is_authenticated:
         print(
-            f"User {current_user.username} is already authenticated with role {current_user.role}")
+            f"User {current_user.name} is already authenticated with role {current_user.role}")
         return redirect(url_for('app_routes.student_dashboard' if current_user.role == 'student' else 'app_routes.professor_dashboard'))
 
     form = RegistrationForm()
@@ -51,16 +51,28 @@ def register():
         hashed_password = bcrypt.generate_password_hash(
             form.password.data).decode('utf-8')
         # Debugging: Password hashed
-        print(f"Password hashed for user {form.username.data}")
+        print(f"Password hashed for user {form.name.data}")
+
+        # If the user is a student, enrollment_number is required
+        if form.role.data == 'student':
+            if not form.enrollment_number.data:
+                flash('Enrollment number is required for students', 'danger')
+                return redirect(url_for('app_routes.register'))
 
         # Create a new user object (student or professor)
-        user = User(username=form.username.data, email=form.email.data,
-                    password=hashed_password, role=form.role.data)
+        user = User(
+            name=form.name.data,  # Storing full name
+            # Enrollment number only for students
+            enrollment_number=form.enrollment_number.data if form.role.data == 'student' else None,
+            email=form.email.data,
+            password=hashed_password,
+            role=form.role.data
+        )
         db.session.add(user)
         db.session.commit()
         # Debugging: User added to DB
         print(
-            f"User {form.username.data} with role {form.role.data} added to the database")
+            f"User {form.name.data} with role {form.role.data} added to the database")
 
         # If the user is a student, handle image uploads
         if form.role.data == 'student' and 'images' in request.files:
@@ -118,6 +130,7 @@ def register():
     print("Form did not validate")  # Debugging: Form validation failed
     print(form.errors)  # Debugging: Form errors
     return render_template('register.html', form=form)
+
 
 # Login route
 
@@ -241,7 +254,8 @@ def schedule_class():
 
     # Use the classroom_id and course_id as needed (e.g., save to the database or perform an action)
 
-    flash(f'Class scheduled in classroom {classroom_id} for {date}!', 'success')
+    flash(
+        f'Class scheduled in classroom {classroom_id} for {date}!', 'success')
     return redirect(url_for('app_routes.professor_dashboard'))
 
 
@@ -257,10 +271,38 @@ def view_report():
 
     course_id = request.form.get('course')
 
+    # Fetch the course by its ID
+    course = Course.query.get(course_id)
+    if not course:
+        flash('Course not found.', 'danger')
+        return redirect(url_for('app_routes.home'))
+
     # Fetch attendance records for this course
     attendance_records = Attendance.query.filter_by(course_id=course_id).all()
 
-    return render_template('attendance_report.html', attendance_records=attendance_records)
+    # Fetch all students in the course
+    students = User.query.filter_by(role='student').all()
 
+    # Prepare data for each student
+    report_data = []
+    for student in students:
+        # Total classes for the course
+        total_classes = Attendance.query.filter_by(
+            course_id=course_id, student_id=student.id).count()
 
+        # Classes attended by the student
+        classes_attended = Attendance.query.filter_by(
+            course_id=course_id, student_id=student.id, status='Present').count()
 
+        # Calculate percentage
+        attendance_percentage = (
+            classes_attended / total_classes) * 100 if total_classes > 0 else 0
+
+        report_data.append({
+            'name': student.name,
+            'roll_number': student.enrollment_number,
+            'attendance_percentage': round(attendance_percentage, 2)
+        })
+
+    # Pass the course name along with the report data
+    return render_template('attendance_report.html', report_data=report_data, course_name=course.name)

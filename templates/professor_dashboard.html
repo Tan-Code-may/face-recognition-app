@@ -2,7 +2,7 @@
 {% block title %}Professor Dashboard{% endblock %}
 {% block content %}
 <div class="dashboard-container">
-    <h2>Welcome, Professor {{ current_user.username }}</h2>
+    <h2>Welcome, Professor {{ current_user.name }}</h2>
 
     <!-- Flash messages for feedback -->
     {% with messages = get_flashed_messages(with_categories=true) %}

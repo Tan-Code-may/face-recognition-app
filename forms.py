@@ -6,35 +6,50 @@ from flask import request
 
 
 class RegistrationForm(FlaskForm):
-    enrollment_number = StringField('Enrollment No.', validators=[
-        DataRequired(), Length(min=10, max=10)])
+    name = StringField('Name', validators=[DataRequired()])
+    enrollment_number = StringField('Enrollment No.')
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password', validators=[
-                                     DataRequired(), EqualTo('password')])
+        DataRequired(), EqualTo('password', message="Passwords must match.")])
     role = SelectField(
         'Role', choices=[('student', 'Student'), ('professor', 'Professor')])
     images = FileField('Upload Images', validators=[
-                       FileAllowed(['jpg', 'png', 'jpeg', 'gif'], 'Images only!')])
+        FileAllowed(['jpg', 'png', 'jpeg', 'gif'], 'Images only!')
+    ])
 
     submit = SubmitField('Register')
 
-    def validate(self, **kwargs):  # Add **kwargs to accept extra keyword arguments
-        # Call the parent validate method with any extra arguments
+    def validate(self, **kwargs):
         if not super(RegistrationForm, self).validate(**kwargs):
             return False
-        # Check for student role
+
+        # Conditional validation for students
         if self.role.data == 'student':
+            if not self.enrollment_number.data:
+                self.enrollment_number.errors.append(
+                    'Enrollment number is required for students.')
+                return False
+            if len(self.enrollment_number.data) != 10:
+                self.enrollment_number.errors.append(
+                    'Enrollment number must be exactly 10 characters.')
+                return False
             if not self.images.data or len(request.files.getlist("images")) != 5:
                 self.images.errors.append(
                     'Students must upload exactly 5 images.')
                 return False
-        # Check for professor role
+
+        # Conditional validation for professors (no enrollment number required)
         elif self.role.data == 'professor':
+            if self.enrollment_number.data:
+                self.enrollment_number.errors.append(
+                    'Enrollment number is not required for professors.')
+                return False
             if not self.images.data or len(request.files.getlist("images")) != 1:
                 self.images.errors.append(
                     'Professors must upload exactly 1 image.')
                 return False
+
         return True
 
 
