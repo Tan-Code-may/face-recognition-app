@@ -33,7 +33,7 @@
                 <label for="classroom">Select Classroom</label>
                 <select name="classroom" id="classroom">
                     {% for classroom in classrooms %}
-                        <option value="{{ classroom.id }}">{{ classroom.name }}</option>
+                        <option value="{{ classroom.id }}">{{classroom.location}} {{ classroom.name }}</option>
                     {% endfor %}
                 </select>
             </div>            
