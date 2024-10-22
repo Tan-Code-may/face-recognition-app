@@ -32,7 +32,58 @@
     </main>
 
     <footer>
-        <p>&copy; 2024 Face Recognition Attendance</p>
+        <div class="footer-content">
+            © 2024 Face Recognition Attendance
+        </div>
     </footer>
+    
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+    
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+    
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+        }
+    
+        main {
+            flex: 1;
+            padding-top: 60px; /* Adjust based on header height */
+            padding-bottom: 40px; /* Adjust based on footer height */
+        }
+    
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        
+        .header-content a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+    </style>
+    
 </body>
 </html>

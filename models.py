@@ -47,3 +47,12 @@ class Attendance(db.Model):
 
     def __repr__(self):
         return f"Attendance(Student ID: {self.student_id}, Course ID: {self.course_id}, Status: {self.status})"
+
+class Classroom(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True, nullable=False)
+    location = db.Column(db.String(100), nullable=True)  # Optional: location of the classroom
+    capacity = db.Column(db.Integer, nullable=True)  # Optional: capacity of the classroom
+
+    def __repr__(self):
+        return f"Classroom('{self.name}', Capacity: {self.capacity}, Location: {self.location})"

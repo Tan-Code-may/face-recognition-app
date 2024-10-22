@@ -14,7 +14,7 @@
             </div>
         {% endif %}
     {% endwith %}
-    
+
     <!-- Schedule a Class -->
     <div class="actions">
         <h3>Schedule a Class</h3>
@@ -27,6 +27,17 @@
                     {% endfor %}
                 </select>
             </div>
+
+            <!-- New Classroom Selection Field -->
+            <div class="form-group">
+                <label for="classroom">Select Classroom</label>
+                <select name="classroom" id="classroom">
+                    {% for classroom in classrooms %}
+                        <option value="{{ classroom.id }}">{{ classroom.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>            
+
             <div class="form-group">
                 <label for="date">Select Date</label>
                 <input type="date" id="date" name="date">
