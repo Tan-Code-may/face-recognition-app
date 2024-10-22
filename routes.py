@@ -149,8 +149,8 @@ def logout():
     flash('You have been logged out!', 'info')
     return redirect(url_for('app_routes.home'))
 
-# Student Dashboard
 
+# Student Dashboard route
 
 @app_routes.route('/student_dashboard')
 @login_required
@@ -159,11 +159,55 @@ def student_dashboard():
         flash('Access denied', 'danger')
         return redirect(url_for('app_routes.home'))
 
-    # Fetch attendance records for the logged-in student
-    attendance_records = Attendance.query.filter_by(
-        student_id=current_user.id).all()
+    # Fetch all courses the student has ever attended
+    courses = db.session.query(Course).join(Attendance).filter(
+        Attendance.student_id == current_user.id).all()
 
-    return render_template('student_dashboard.html', attendance_records=attendance_records)
+    attendance_summary = []
+    for course in courses:
+        total_classes = db.session.query(Attendance).filter_by(
+            course_id=course.id).count()
+
+        attended_classes = db.session.query(Attendance).filter_by(
+            course_id=course.id, student_id=current_user.id, status='Present').count()
+
+        missed_classes = total_classes - attended_classes  # Calculate missed classes
+
+        if total_classes > 0:
+            attendance_percentage = (attended_classes / total_classes) * 100
+        else:
+            attendance_percentage = 0
+
+        attendance_summary.append({
+            'course': {
+                'id': course.id,
+                'name': course.name
+            },
+            'attended': attended_classes,
+            'missed': missed_classes,
+            'percentage': attendance_percentage
+        })
+
+    return render_template('student_dashboard.html', attendance_summary=attendance_summary)
+
+# Route for viewing detailed attendance of a particular course
+
+
+@app_routes.route('/course/<int:course_id>/attendance')
+@login_required
+def view_attendance(course_id):
+    if current_user.role != 'student':
+        flash('Access denied', 'danger')
+        return redirect(url_for('app_routes.home'))
+
+    course = Course.query.get_or_404(course_id)
+
+    # Fetch attendance records for this course for the current user
+    attendance_records = Attendance.query.filter_by(
+        course_id=course_id, student_id=current_user.id).all()
+
+    return render_template('course_attendance.html', course=course, attendance_records=attendance_records)
+
 
 # Professor Dashboard
 

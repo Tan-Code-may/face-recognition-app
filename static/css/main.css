@@ -68,46 +68,12 @@ button.btn {
     width: 100%;
 }
 
-table.attendance-table {
-    width: 100%;
-    max-width: 800px;
-    margin: 30px auto;
-    border-collapse: collapse;
+/* Scoped styles for homepage */
+.homepage {
+    background-color: white;
 }
 
-table.attendance-table th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: center;
-}
-
-table.attendance-table th {
-    background-color: #4CAF50;
-    color: white;
-}
-
-/* Footer Styles */
-footer {
-    text-align: center;
-    padding: 10px;
-    background-color: #333;
-    color: white;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-}
-
-/* General styles */
-body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
-
-/* Hero section */
-.hero {
+.homepage .hero {
     background: url('/static/images/hero-bg.jpg') no-repeat center center/cover;
     height: 80vh;
     color: white;
@@ -117,57 +83,39 @@ body {
     text-align: center;
 }
 
-.hero-content {
+.homepage .hero-content {
     background: rgba(0, 0, 0, 0.5);
     padding: 20px;
     border-radius: 10px;
 }
 
-.hero h1 {
+.homepage .hero h1 {
     font-size: 3em;
     margin-bottom: 20px;
 }
 
-.hero p {
+.homepage .hero p {
     font-size: 1.2em;
     margin-bottom: 30px;
 }
 
-/* Buttons */
-.btn-primary, .btn-secondary {
+.homepage .btn-primary {
+    background-color: #007bff;
     padding: 10px 20px;
     font-size: 1.1em;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
     text-decoration: none;
     color: white;
-    margin-top: 20px;
-}
-
-.btn-primary {
-    background-color: #007bff;
+    border-radius: 5px;
     transition: background-color 0.3s ease;
 }
 
-.btn-primary:hover {
+.homepage .btn-primary:hover {
     background-color: #0056b3;
 }
 
-.btn-secondary {
-    background-color: #28a745;
-    transition: background-color 0.3s ease;
-}
-
-.btn-secondary:hover {
-    background-color: #218838;
-}
-
-/* Features section */
 .features {
     display: flex;
     justify-content: space-around;
-    background-color: white;
     padding: 40px 0;
 }
 
@@ -177,7 +125,6 @@ body {
 }
 
 .feature h2 {
-    color: #333;
     font-size: 1.8em;
     margin-bottom: 15px;
 }
@@ -186,7 +133,6 @@ body {
     color: #555;
 }
 
-/* CTA Section */
 .cta {
     text-align: center;
     padding: 40px;
@@ -200,5 +146,74 @@ body {
 }
 
 .cta .btn-secondary {
-    margin-top: 20px;
+    background-color: #28a745;
+    padding: 10px 20px;
+    font-size: 1.1em;
+    text-decoration: none;
+    color: white;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.cta .btn-secondary:hover {
+    background-color: #218838;
+}
+
+/* Styles for attendance-related pages */
+.attendance-page .attendance-table {
+    width: 100%;
+    max-width: 800px;
+    margin: 30px auto;
+    border-collapse: collapse;
+}
+
+.attendance-page .attendance-table th,
+.attendance-page .attendance-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.attendance-page .attendance-table th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.attendance-page .attendance-table canvas {
+    width: 250px !important;
+    height: 250px !important;
+    display: block;
+    margin: 0 auto;
+}
+
+.attendance-page .attendance-table td {
+    width: 300px;
+    vertical-align: middle;
+}
+
+@media (max-width: 768px) {
+    .attendance-page .attendance-table canvas {
+        width: 150px !important;
+        height: 150px !important;
+    }
+
+    .attendance-page .attendance-table td {
+        width: 180px;
+    }
+}
+
+.attendance-page .attendance-table td:nth-child(3) {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+/* Footer Styles */
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }
