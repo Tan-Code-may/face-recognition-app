@@ -39,4 +39,23 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }
+
+    // Initialize Select2 with options for auto-opening search
+    const selectElements = document.querySelectorAll('.select2');
+    selectElements.forEach(function (element) {
+        $(element).select2({
+            placeholder: 'Search or select an option',   // Set a default placeholder
+            allowClear: true,  // Add the "clear" button to reset selection
+            minimumResultsForSearch: 0,  // Always show the search box
+            width: '100%',  // Make sure the width fits nicely
+        });
+
+        // Force the dropdown to open and search box to focus on single click
+        $(element).on('select2:open', function () {
+            setTimeout(function () {
+                // Focus the search field when the dropdown opens
+                $('.select2-search__field').focus();
+            }, 100);  // Add a small delay to ensure the dropdown is fully open before focusing
+        });
+    });
 });
