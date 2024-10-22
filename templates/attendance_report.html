@@ -13,11 +13,15 @@
             </tr>
         </thead>
         <tbody>
-            {% for data in report_data %}
+            {% for record in report_data %}
             <tr>
-                <td>{{ data.name }}</td>
-                <td>{{ data.roll_number }}</td>
-                <td>{{ data.attendance_percentage }}%</td>
+                <td>
+                    <a href="{{ url_for('app_routes.view_student_attendance', course_id=course_id, student_id=record.id) }}">
+                        {{ record.name }}
+                    </a>
+                </td>
+                <td>{{ record.roll_number }}</td>
+                <td>{{ record.attendance_percentage }}%</td>
             </tr>
             {% endfor %}
         </tbody>

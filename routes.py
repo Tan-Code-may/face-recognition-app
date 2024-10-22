@@ -262,6 +262,7 @@ def schedule_class():
 # Route to view attendance report (Professor only)
 
 
+# Route to view attendance report (Professor only)
 @app_routes.route('/view_report', methods=['POST'])
 @login_required
 def view_report():
@@ -271,38 +272,62 @@ def view_report():
 
     course_id = request.form.get('course')
 
-    # Fetch the course by its ID
     course = Course.query.get(course_id)
     if not course:
         flash('Course not found.', 'danger')
         return redirect(url_for('app_routes.home'))
 
-    # Fetch attendance records for this course
-    attendance_records = Attendance.query.filter_by(course_id=course_id).all()
-
-    # Fetch all students in the course
     students = User.query.filter_by(role='student').all()
 
-    # Prepare data for each student
     report_data = []
     for student in students:
-        # Total classes for the course
         total_classes = Attendance.query.filter_by(
             course_id=course_id, student_id=student.id).count()
 
-        # Classes attended by the student
         classes_attended = Attendance.query.filter_by(
             course_id=course_id, student_id=student.id, status='Present').count()
 
-        # Calculate percentage
         attendance_percentage = (
             classes_attended / total_classes) * 100 if total_classes > 0 else 0
 
         report_data.append({
+            'id': student.id,
             'name': student.name,
             'roll_number': student.enrollment_number,
             'attendance_percentage': round(attendance_percentage, 2)
         })
 
-    # Pass the course name along with the report data
-    return render_template('attendance_report.html', report_data=report_data, course_name=course.name)
+    return render_template('attendance_report.html',
+                           report_data=report_data,
+                           course_name=course.name,
+                           course_id=course_id)
+
+
+# Route to view detailed attendance for a specific student in a course (Professor only)
+@app_routes.route('/view_student_attendance/<int:course_id>/<int:student_id>', methods=['GET'])
+@login_required
+def view_student_attendance(course_id, student_id):
+    if current_user.role != 'professor':
+        flash('Access denied', 'danger')
+        return redirect(url_for('app_routes.home'))
+
+    # Fetch the student
+    student = User.query.get(student_id)
+    if not student or student.role != 'student':
+        flash('Student not found.', 'danger')
+        return redirect(url_for('app_routes.home'))
+
+    # Fetch the course
+    course = Course.query.get(course_id)
+    if not course:
+        flash('Course not found.', 'danger')
+        return redirect(url_for('app_routes.home'))
+
+    # Fetch attendance records for the student in the course
+    attendance_records = Attendance.query.filter_by(
+        course_id=course_id, student_id=student_id).all()
+
+    return render_template('student_attendance_details.html',
+                           attendance_records=attendance_records,
+                           student=student,
+                           course_name=course.name)
